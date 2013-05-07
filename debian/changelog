@@ -1,3 +1,9 @@
+tivsm (6.3.1-1) precise; urgency=low
+
+  * New version of TSM.
+
+ -- Brian May <bam@debian.org>  Tue, 07 May 2013 13:40:20 +1000
+
 tivsm (6.3.0-2) precise; urgency=low
 
   * Trial
