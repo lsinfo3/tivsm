@@ -1,0 +1,14 @@
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8acmeidup_64.so /usr/lib/libgsk8acmeidup_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8cms_64.so      /usr/lib/libgsk8cms_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8dbfl_64.so     /usr/lib/libgsk8dbfl_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8drld_64.so     /usr/lib/libgsk8drld_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8iccs_64.so     /usr/lib/libgsk8iccs_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8kicc_64.so     /usr/lib/libgsk8kicc_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8km_64.so       /usr/lib/libgsk8km_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8ldap_64.so     /usr/lib/libgsk8ldap_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8p11_64.so      /usr/lib/libgsk8p11_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8ssl_64.so      /usr/lib/libgsk8ssl_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8sys_64.so      /usr/lib/libgsk8sys_64.so
+/usr/lib/tivoli/gsk8_64/lib64/libgsk8valn_64.so     /usr/lib/libgsk8valn_64.so
+/usr/lib/tivoli/gsk8_64/bin/gsk8capicmd        /usr/bin/gsk8capicmd
+/usr/lib/tivoli/gsk8_64/bin/gsk8ver            /usr/bin/gsk8ver

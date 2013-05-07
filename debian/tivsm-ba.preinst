@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+install|upgrade)
+    if dpkg --compare-versions "$2" le "6.2.1-2"; then
+        SRC1="/opt/tivoli/tsm/client/ba/bin/dsm.opt"
+        SRC2="/etc/dsm.opt"
+        DST="/etc/adsm/dsm.opt"
+        if [ -f "$SRC1" ] && [ ! -L "$SRC1" ] && [ ! -f "DST" ]
+        then
+            mkdir -p /etc/adsm
+            mv "$SRC1" "$DST"
+        elif [ -f "$SRC2" ] && [ ! -L "$SRC2" ] && [ ! -f "DST" ]
+        then
+            mkdir -p /etc/adsm
+            mv "$SRC2" "$DST"
+        fi
+
+        SRC1="/opt/tivoli/tsm/client/ba/bin/dsm.sys"
+        SRC2="/etc/dsm.sys"
+        DST="/etc/adsm/dsm.sys"
+        if [ -f "$SRC1" ] && [ ! -L "$SRC1" ] && [ ! -f "DST" ]
+        then
+            mkdir -p /etc/adsm
+            mv "$SRC1" "$DST"
+        elif [ -f "$SRC2" ] && [ ! -L "$SRC2" ] && [ ! -f "DST" ]
+        then
+            mkdir -p /etc/adsm
+            mv "$SRC2" "$DST"
+        fi
+    fi
+    ;;
+esac
+
+#DEBHELPER#

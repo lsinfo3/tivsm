@@ -1,0 +1,31 @@
+Source: tivsm
+Section: non-free/admin
+Priority: extra
+Maintainer: Brian May <bam@debian.org>
+Build-Depends: debhelper (>= 5), rpm
+Standards-Version: 3.9.1
+
+Package: tivsm-api
+Architecture: any
+Conflicts: tivsm-api64
+Depends: ${shlibs:Depends}, ${misc:Depends}, tivsm-gsk (= ${binary:Version})
+Description: IBM Tivoli Storage Manager API
+ The API library used by TSM.
+
+Package: tivsm-ba
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, tivsm-api (= ${binary:Version}), mksh | pdksh
+Description: Backup Archive Client
+ The backup client used by TSM.
+
+Package: tivsm-gsk
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: IBM GSKit Cryptography Runtime
+ Libraries used for encryption/decryption in Tivoli.
+
+Package: tivsm-msg
+Depends: ${misc:Depends}
+Architecture: all
+Description: IBM Tivoli Storage Manager Client Messages
+ For languages other than English.

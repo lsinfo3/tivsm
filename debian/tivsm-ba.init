@@ -1,0 +1,103 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          dsmcad
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start dsmcad at boot time
+# Description:       Enable service provided by dsmcad.
+### END INIT INFO
+
+#Include functions file
+if [ -f "/etc/default/tivsm-ba" ]
+then
+    . /etc/default/tivsm-ba
+fi
+
+. /lib/lsb/init-functions
+
+# Define environment variables
+export DSM_DIR="/usr/lib/tivoli/tsm/client/ba/bin"
+
+if [ ! -e "$DSM_DIR/dsmcad" ]
+then
+    exit 0
+fi
+
+if [ "$DSMCAD_START" = "no" ] || [ "$DSMCAD_START" = "No" ] || [ "$DSMCAD_START" = "NO" ] || [ -z "$DSMCAD_START" ]
+then
+    exit 0
+fi
+
+start () {
+        log_daemon_msg "Starting Tivoli Client Acceptor Deamon" "dsmcad"
+
+        PID=`pidof dsmcad`
+        if [ $? -eq 0 ]; then
+                RETVAL=0
+                log_warning_msg " (already running)."
+        else
+                dsmcad $DSMCAD_OPTS
+                PID=`pidof dsmcad`
+                if [ $? -eq 0 ]; then
+                        RETVAL=0
+                        log_end_msg 0
+                else
+                        RETVAL=1
+                        log_end_msg 1
+                fi;
+        fi
+        return $RETVAL
+}
+
+stop () {
+        log_daemon_msg "Shutting Down Tivoli Client Acceptor Deamon" "dsmcad"
+
+        PID=`pidof dsmcad`
+        if [ $? -eq 0 ]; then
+                kill $PID
+                if [ $? -ne 0 ]; then
+                        log_end_msg 1
+                        return 1
+                fi
+
+                i=0
+                PID=`pidof dsmcad`
+                while [ $? -eq 0 ] && [ $i -lt 5 ]
+                do
+                        sleep 1
+                        i=$(( $i + 1 ))
+                        PID=`pidof dsmcad`
+                done
+
+                if [ $? -ne 0 ]; then
+                        RETVAL=0
+                        log_end_msg 0
+                else
+                        RETVAL=1
+                        log_end_msg 1
+                fi
+        else
+                RETVAL=0
+                log_warning_msg " (not running)."
+        fi
+        return $RETVAL
+}
+
+
+# See how we were called.
+case $1 in
+
+start)
+        start ;;
+stop)
+        stop ;;
+restart|force-reload)
+        stop
+        start ;;
+*)
+        echo "Usage: dsmcad {start|stop|restart}"; exit ;;
+
+esac
+

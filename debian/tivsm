@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+if [ -f "/etc/default/tivsm-ba" ]
+then
+    . /etc/default/tivsm-ba
+fi
+export DSM_DIR=/usr/lib/tivoli/tsm/client/ba/bin
+
+command="`basename "$0"`"
+if [ "$command" = "tivsm" ]
+then
+    if [ -z "$1" ]
+    then
+        echo "Usage: tivsm <command> <args>" >&2
+        exit 1
+    fi
+
+    command="$1"
+    shift
+fi
+
+exec "/usr/lib/tivoli/tsm/client/ba/bin/$command" "$@"

@@ -1,0 +1,13 @@
+# Defaults for tivsm initscript
+# sourced by /etc/init.d/tivsm
+# installed at /etc/default/tivsm by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+export LANG=en_US
+
+# Additional options that are passed to the Daemon.
+DSMCAD_START="no"
+DSMCAD_OPTS=""

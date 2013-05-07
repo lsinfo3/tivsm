@@ -1,0 +1,8 @@
+/etc/adsm/dsm.sys /usr/lib/tivoli/tsm/client/ba/bin/dsm.sys
+/etc/adsm/dsm.opt /usr/lib/tivoli/tsm/client/ba/bin/dsm.opt
+/usr/lib/tivoli/tsm/client/lang/EN_US /usr/lib/tivoli/tsm/client/ba/bin/EN_US
+/usr/lib/tivoli/tsm/client/lang/EN_US /usr/lib/tivoli/tsm/client/ba/bin/EN_AU
+/usr/lib/tivoli/tsm/client/api/bin64/libgpfs.so /usr/lib/libgpfs.so
+/usr/lib/tivoli/tsm/client/api/bin64/libdmapi.so /usr/lib/libdmapi.so
+/usr/lib/tivoli/tsm/client/api/bin64/libha_gs_r.so /usr/lib/libha_gs_r.so
+/usr/lib/tivoli/tsm/client/api/bin64/libct_cu.so /usr/lib/libct_cu.so

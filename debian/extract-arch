@@ -1,0 +1,111 @@
+#!/bin/sh
+
+set -ex
+
+directory() {
+        rm -rf "debian/$1"
+        mkdir "debian/$1"
+}
+
+extract() {
+        local WD
+        WD="$PWD"
+        cd "debian/$2"
+        rpm2cpio "$WD/$1" | cpio -dimv
+        cd "$WD"
+}
+
+VERSION="6.3.0.0"
+GVERSION="8.0.14.11"
+
+mkdir build
+if [ -z "$1" ]
+then
+    echo "Archecture not given $1!!" >&2
+    exit 1
+elif [ "$1" = "x86_64" ]
+then
+    HOST_CPU="x86_64"
+    POSTFIX="LinuxX86"
+else
+    echo "Unsupported archecture $1!!" >&2
+    exit 1
+fi
+
+tar -C build -xf "$VERSION-TIV-TSMBAC-$POSTFIX.tar"
+
+directory tivsm-api
+directory tivsm-ba
+directory tivsm-gsk
+
+extract "build/TIVsm-API64.$HOST_CPU.rpm" tivsm-api
+extract "build/TIVsm-BA.$HOST_CPU.rpm" tivsm-ba
+
+rm -f ./debian/tivsm-ba/usr/bin/dsmcad
+
+if [ "$1" = "x86_64" ]
+then
+    extract "build/gskcrypt64-$GVERSION.linux.x86_64.rpm" tivsm-gsk
+    extract "build/gskssl64-$GVERSION.linux.x86_64.rpm" tivsm-gsk
+    echo "shlibs:Depends=libc6, libgcc1, libstdc++6" > debian/tivsm-api.substvars
+    echo "shlibs:Depends=libc6, libgcc1, libstdc++6" > debian/tivsm-ba.substvars
+    echo "shlibs:Depends=libc6, libgcc1, libstdc++6" > debian/tivsm-hsm.substvars
+    echo "shlibs:Depends=libc6, libgcc1, libstdc++6" > debian/tivsm-gsk.substvars
+fi
+
+
+if [ "$1" = "x86_64" ]
+then
+    extract "build/TIVsm-API64.$HOST_CPU.rpm" tivsm-api
+fi
+
+sed -i 's=^#!/usr/bin/ksh=#!/bin/ksh=' debian/tivsm-ba/opt/tivoli/tsm/client/ba/bin/dsmj
+
+# Don't use /opt or /usr/local
+mkdir -p debian/tivsm-gsk/usr/lib/tivoli
+mv debian/tivsm-gsk/usr/local/ibm/* debian/tivsm-gsk/usr/lib/tivoli
+rmdir debian/tivsm-gsk/usr/local/ibm
+rmdir debian/tivsm-gsk/usr/local
+
+mkdir -p debian/tivsm-ba/usr/lib/tivoli
+mv debian/tivsm-ba/opt/tivoli/* debian/tivsm-ba/usr/lib/tivoli
+rmdir debian/tivsm-ba/opt/tivoli
+rmdir debian/tivsm-ba/opt
+
+mkdir -p debian/tivsm-api/usr/lib/tivoli
+mv debian/tivsm-api/opt/tivoli/* debian/tivsm-api/usr/lib/tivoli
+rmdir debian/tivsm-api/opt/tivoli
+rmdir debian/tivsm-api/opt
+
+# replace broken symlinks
+for i in debian/tivsm-api/usr/lib64/lib*.so
+do
+    base="$(basename "$i")"
+    readlink "$i"
+    j="$(readlink "$i" | sed 's=^\.\./\.\./opt=/usr/lib=')"
+    ln -sf "$j" "debian/tivsm-api/usr/lib/$base"
+    rm "$i"
+done
+rmdir debian/tivsm-api/usr/lib64
+
+# replace broken symlinks with symlink to wrapper script
+for i in debian/tivsm-ba/usr/bin/*
+do
+    ln -sf "tivsm" "$i"
+done
+install -m755 debian/tivsm debian/tivsm-ba/usr/bin
+
+# Fix dodgy permisions - files not executable
+find debian/tivsm-gsk/usr/lib/tivoli \( -name "*.txt" -or -name copyright \) -print0 | xargs -0 chmod 644
+find debian/tivsm-api/usr/lib/tivoli \( -name "*.txt" -or -name copyright \) -print0 | xargs -0 chmod 644
+find debian/tivsm-ba/usr/lib/tivoli  \( -name "*.txt" -or -name copyright \) -print0 | xargs -0 chmod 644
+chmod 644 debian/tivsm-ba/usr/lib/tivoli/tsm/client/ba/bin/*.opt debian/tivsm-ba/usr/lib/tivoli/tsm/client/ba/bin/configFile
+# Fix dodgy permisions - directories shoulod be executable
+find debian/tivsm-gsk/usr/lib/tivoli -type d -print0 | xargs -0 chmod 755
+find debian/tivsm-api/usr/lib/tivoli -type d -print0 | xargs -0 chmod 755
+find debian/tivsm-ba/usr/lib/tivoli  -type d -print0 | xargs -0 chmod 755
+
+# Sample config file
+mkdir -p debian/tivsm-ba/etc/adsm
+cp debian/tivsm-ba/usr/lib/tivoli/tsm/client/ba/bin/dsm.opt.smp debian/tivsm-ba/etc/adsm/dsm.opt
+cp debian/tivsm-ba/usr/lib/tivoli/tsm/client/ba/bin/dsm.sys.smp debian/tivsm-ba/etc/adsm/dsm.sys

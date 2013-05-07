@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+remove_etc_files() {
+  rm -f /etc/TIVGUID /etc/adsm/TSM.PWD /etc/adsm/dsm.sys /etc/adsm/dsm.opt
+  rmdir /etc/adsm/ 2> /dev/null || true
+}
+
+case "$1" in
+    purge)
+    remove_etc_files
+    ;;
+
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    ;;
+
+    *)
+    echo "$0 called with unknown argument '$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+

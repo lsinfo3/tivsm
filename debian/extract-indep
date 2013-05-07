@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -ex
+
+directory() {
+        rm -rf "debian/$1"
+        mkdir "debian/$1"
+}
+
+extract() {
+        local WD
+        WD="$PWD"
+        cd "debian/$2"
+        rpm2cpio "$WD/$1" | cpio -dimv
+        cd "$WD"
+}
+
+directory tivsm-msg
+
+HOST_CPU=x86_64
+
+extract "TIVsm-msg.CS_CZ.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.DE_DE.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.ES_ES.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.FR_FR.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.HU_HU.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.IT_IT.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.JA_JP.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.KO_KR.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.PL_PL.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.PT_BR.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.RU_RU.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.ZH_CN.$HOST_CPU.rpm" tivsm-msg
+extract "TIVsm-msg.ZH_TW.$HOST_CPU.rpm" tivsm-msg
+
+# don't use /opt
+mkdir -p debian/tivsm-msg/usr/lib/tivoli
+mv debian/tivsm-msg/opt/tivoli/* debian/tivsm-msg/usr/lib/tivoli
+rmdir debian/tivsm-msg/opt/tivoli
+rmdir debian/tivsm-msg/opt
