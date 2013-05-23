@@ -4,12 +4,6 @@ tivsm (6.3.1-1) precise; urgency=low
 
  -- Brian May <bam@debian.org>  Tue, 07 May 2013 13:40:20 +1000
 
-tivsm (6.3.0-2) precise; urgency=low
-
-  * Trial
-
- -- Brian May <bam@debian.org>  Mon, 08 Oct 2012 16:16:31 +1100
-
 tivsm (6.3.0-1) stable; urgency=low
 
   * New upstream version.
