@@ -41,8 +41,6 @@ directory tivsm-gsk
 extract "build/TIVsm-API64.$HOST_CPU.rpm" tivsm-api
 extract "build/TIVsm-BA.$HOST_CPU.rpm" tivsm-ba
 
-rm -f ./debian/tivsm-ba/usr/bin/dsmcad
-
 if [ "$1" = "x86_64" ]
 then
     extract "build/gskcrypt64-$GVERSION.linux.x86_64.rpm" tivsm-gsk
