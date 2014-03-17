@@ -1,0 +1,2 @@
+#!/bin/sh -x
+wget -dr -nc --no-parent --no-directories -L ftp://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v6r4/Linux/LinuxX86/BA/v641

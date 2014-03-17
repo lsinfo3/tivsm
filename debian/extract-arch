@@ -15,8 +15,8 @@ extract() {
         cd "$WD"
 }
 
-VERSION="6.3.1.0"
-GVERSION="8.0.14.14"
+VERSION="6.4.1.0"
+GVERSION="8.0.14.26"
 
 mkdir build
 if [ -z "$1" ]

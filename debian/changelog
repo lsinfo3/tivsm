@@ -1,3 +1,9 @@
+tivsm (6.4.1-1) wheezy; urgency=low
+
+  * New version.
+
+ -- Brian May <bam@debian.org>  Mon, 17 Mar 2014 16:18:01 +1100
+
 tivsm (6.3.1-2) precise; urgency=low
 
   * Add missing dsmcad symlink.
